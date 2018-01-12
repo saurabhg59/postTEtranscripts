@@ -1,6 +1,8 @@
 #! /usr/bin/perl -w
 use strict;
 
+###testing github
+
 ### read in all the .cntTable files
 my %files; #hash mapping treatment filename to control filename
 my %geneValues; #hash containing all the gene counts
