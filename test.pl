@@ -33,28 +33,6 @@ my %H2Bindex = ("NM_001002916" => 0,
 "NM_003527" => 17,
 "NM_003528" => 18);
 
-
-##### arrays containing the H2B expression values
-# my @HIST1H2BA_NM_170610;
-# my @HIST1H2BB_NM_021062;
-# my @HIST1H2BC_NM_003526;
-# my @HIST1H2BD_NM_021063;
-# my @HIST1H2BD_NM_138720;
-# my @HIST1H2BE_NM_003523;
-# my @HIST1H2BF_NM_003522;
-# my @HIST1H2BG_NM_003518;
-# my @HIST1H2BH_NM_003524;
-# my @HIST1H2BI_NM_003525;
-# my @HIST1H2BJ_NM_021058;
-# my @HIST1H2BK_NM_001312653;
-# my @HIST1H2BK_NM_080593;
-# my @HIST1H2BL_NM_003519;
-# my @HIST1H2BM_NM_003521;
-# my @HIST1H2BN_NM_003520;
-# my @HIST1H2BO_NM_003527;
-# my @HIST2H2BE_NM_003528;
-# my @H2BFWT_NM_001002916;
-
 foreach my $filename (@ARGV){
     open(INPUT,$filename) or die "unable to open $filename\n";
     # if ($filename =~ m"^rmsk") {
