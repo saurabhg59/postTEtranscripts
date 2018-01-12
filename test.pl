@@ -13,24 +13,15 @@ my $lineCount; #variable that tracks the line number in current file
 my %index; #hash that indexes treatment filename to a unqiue number
 my $count=0; #counter
 
-my %H2Bindex = ("NM_001002916" => 0,
-"NM_170610" => 1,
-"NM_021062" => 2,
-"NM_003526" => 3,
-"NM_021063" => 4,
-"NM_138720" => 5,
-"NM_003523" => 6,
-"NM_003522" => 7,
-"NM_003518" => 8,
-"NM_003524" => 9,
-"NM_003525" => 10,
-"NM_021058" => 11,
-"NM_001312653" => 12,
-"NM_080593" => 13,
-"NM_003519" => 14,
-"NM_003521" => 15,
-"NM_003520" => 16,
-"NM_003527" => 17,
+my %H2Bindex = ("NM_001002916" => 0, "NM_170610" => 1,
+"NM_021062" => 2, "NM_003526" => 3,
+"NM_021063" => 4, "NM_138720" => 5,
+"NM_003523" => 6, "NM_003522" => 7,
+"NM_003518" => 8, "NM_003524" => 9,
+"NM_003525" => 10, "NM_021058" => 11,
+"NM_001312653" => 12, "NM_080593" => 13,
+"NM_003519" => 14, "NM_003521" => 15,
+"NM_003520" => 16, "NM_003527" => 17,
 "NM_003528" => 18);
 
 foreach my $filename (@ARGV){
@@ -45,7 +36,7 @@ foreach my $filename (@ARGV){
 	        	$a[1]=~s/\.T$//g;
 	        	$a[2]=~s/\.C$//g;
 	        	$files{$a[1]}=$a[2]; #treatment ---> control
-	        	$teValues{$a[1]}=[];
+	        	$teValues{$a[1]}=[]; #initializing all the arrays inside the hashes
 	        	$geneValues{$a[1]}=[];
 	        	$l1Values{$a[1]}=[];
 	        	$h2bValues{$a[1]}=[];
@@ -66,27 +57,13 @@ foreach my $filename (@ARGV){
 	        	chomp $line;
 	            my @b=split(/\t/,$line);
 	            if ($b[0] =~ m":") {
-	            	# if (defined $teValues{$a[1]}) {
-	            		push @{$teValues{$a[1]}},$b[1];
-	            	# } else {
-	            		# $teValues{$a[1]}=[$b[1]];
-	            	# }
-	            	# if (defined $teValues{$a[2]}) {
-	            		push @{$teValues{$a[2]}},$b[2];
-	            	# } else {
-	            		$teValues{$a[2]}=[$b[2]];
-	            	# }
-	            } else {
-	            	# if (defined $geneValues{$a[1]}) {
-	            		push @{$geneValues{$a[1]}},$b[1];
-	            	# } else {
-	            		# $geneValues{$a[1]}=[$b[1]];
-	            	# }
-	            	# if (defined $geneValues{$a[2]}) {
-	            		push @{$geneValues{$a[2]}},$b[2];
-	            	# } else {
-	            		# $geneValues{$a[2]}=[$b[2]];
-	            	# }
+	            	push @{$teValues{$a[1]}},$b[1];
+	            	push @{$teValues{$a[2]}},$b[2];
+	            	$teValues{$a[2]}=[$b[2]];
+	            } 
+	            else {
+	            	push @{$geneValues{$a[1]}},$b[1];
+	            	push @{$geneValues{$a[2]}},$b[2];
 	            	foreach my $key (keys %H2Bindex){
 	            		if($b[0]=~m/$key/){
 	            			@{$h2bValues{$a[1]}}[$H2Bindex{$key}]=$b[1];
@@ -124,7 +101,9 @@ foreach my $filename (@ARGV){
     # }
 }
 
-### store the H2B variant expression values into a seperate hash here.
+### delete all the lines which have 0 values
+# find the lengths of the 3 arrays i.e. gene, te and l1
+# loop through 
 
 
 my %sums;
@@ -146,9 +125,9 @@ foreach my $key1 (keys %files) {
 my $mean=0;
 foreach my $key (keys %sums) {
 	print "$key ---> $sums{$key}\n";
-	foreach my $key1 (@{$h2bValues{$key}}){
-		print "$key1\n";
-	}
+	# foreach my $key1 (@{$h2bValues{$key}}){  # part that prints out the H2B expression
+	# 	print "$key1\n";
+	# }
 	$mean+=$sums{$key};
 }
 $mean/=scalar(keys %sums);
