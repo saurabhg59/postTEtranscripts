@@ -8,6 +8,8 @@ geneValues={}
 teValues={}
 l1Values={}
 h2bValues={}
+sums={}
+mean=0
 
 H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
 "NM_021062" : 2, "NM_003526" : 3,
@@ -36,6 +38,8 @@ for filename in sys.argv[1:]:
 				geneValues[a[2]]=[]
 				teValues[a[2]]=[]
 				h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+				sums[a[1]]=0
+				sums[a[2]]=0
 				lineCount+=1
 			else:
 				line=line.strip()
@@ -50,3 +54,43 @@ for filename in sys.argv[1:]:
 						if i in b[0]:
 							h2bValues[a[1]][H2Bindex[i]]=int(b[1])
 							h2bValues[a[2]][H2Bindex[i]]=int(b[2])
+
+
+#delete all 0 value lines here
+
+
+
+###################################################################################################################
+### Normalization part
+###################################################################################################################
+
+for i in files:
+	for j in geneValues[i]:
+		sums[i]+=j
+	for k in teValues[i]:
+		sums[i]+=k
+	for l in geneValues[files[i]]:
+		sums[files[i]]+=l
+	for m in teValues[files[i]]:
+		sums[files[i]]+=m
+
+for i in sums:
+	# print i,"--->",sums[i]
+	# for j in h2bValues[i]:
+	# 	print j
+	mean+=sums[i]
+
+mean/=float(len(sums))
+
+factors=sums
+
+for i in factors:
+	factors[i]=mean/factors[i]
+	for j in geneValues[i]:
+		j=j*factors[i]
+	for k in teValues[i]:
+		k=k*factors[i]
+
+###################################################################################################################
+### print to file and call R script
+###################################################################################################################
