@@ -2,6 +2,7 @@
 
 import numpy as np
 import sys
+from subprocess import call
 
 files={}
 geneValues={}
@@ -21,6 +22,8 @@ H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
 "NM_003519" : 14, "NM_003521" : 15,
 "NM_003520" : 16, "NM_003527" : 17,
 "NM_003528" : 18}
+
+#check for rmsk or l1 file is missing right now
 
 for filename in sys.argv[1:]:
 	lineCount=0
@@ -129,5 +132,21 @@ for i in factors:
 		k=k*factors[i]
 
 ###################################################################################################################
+### determine H2B barplot colors somehow
+###################################################################################################################
+
+
+
+###################################################################################################################
 ### print to file and call R script
 ###################################################################################################################
+
+# add part to print the required values to a csv file which will be read by the R script
+
+# arguements = violin plot filename <SPACE> barplot1 filename <SPACE> barplot2 filename
+
+call("./test.R " + arguements ) # this should call the R script and give the output filename as an arguement(ideally, needs to be tested)
+
+# delete the temp csv file created above and loop this entire process
+
+# need 2nd R script to make barplots here
