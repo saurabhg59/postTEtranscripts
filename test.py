@@ -31,6 +31,7 @@ for filename in sys.argv[1:]:
 				a=line.split("\t")
 				a[1]=a[1][:-2]
 				a[2]=a[2][:-2]
+				tempFilename=a[1]
 				files[a[1]]=a[2]
 				geneValues[a[1]]=[]
 				teValues[a[1]]=[]
@@ -55,10 +56,46 @@ for filename in sys.argv[1:]:
 							h2bValues[a[1]][H2Bindex[i]]=int(b[1])
 							h2bValues[a[2]][H2Bindex[i]]=int(b[2])
 
+#the below code should ideally delete all the 0 valued lines, needs to be tested for multiple files to be sure that it is working as expected
 
-#delete all 0 value lines here
+geneLength=len(geneValues[tempFilename])
 
+for i in range(geneLength):
+	geneSum=0
+	emptyLines=[]
+	for j in geneValues:
+		geneSum+=geneValues[j][i]
+	if(geneSum==0):
+		emptyLines.append(i)
 
+for i in geneValues:
+	geneValues[i]=np.delete(geneValues[i],emptyLines)
+
+teLength=len(teValues[tempFilename])
+
+for i in range(teLength):
+	teSum=0
+	emptyLines=[]
+	for j in teValues:
+		teSum+=teValues[j][i]
+	if(teSum==0):
+		emptyLines.append(i)
+
+for i in teValues:
+	teValues[i]=np.delete(teValues[i],emptyLines)
+
+# l1Length=len(l1Values[tempFilename])
+
+# for i in range(l1Length):
+# 	l1Sum=0
+# 	emptyLines=[]
+# 	for j in l1Values:
+# 		l1Sum+=l1Values[j][i]
+# 	if(l1Sum==0):
+# 		emptyLines.append(i)
+
+# for i in l1Values:
+# 	l1Values[i]=np.delete(l1Values[i],emptyLines)
 
 ###################################################################################################################
 ### Normalization part
