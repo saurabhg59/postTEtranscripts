@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+import subprocess
 import numpy as np
 import sys
 from subprocess import call
@@ -144,22 +145,32 @@ for i in factors:
 ### determine H2B barplot colors somehow
 ###################################################################################################################
 
-mutants=dict(files)
+# mutants=dict(files)
 
-with open("mutantsFile.txt",'r') as MUTANT:
-	for line in MUTANT:
-		line=line.strip()
-		temp=line.split("\t")
-		mutants[temp[0]]=[]
-		for i in temp[1:]:
-			mutants[temp[0]].append(i)
+# with open("mutantsFile.txt",'r') as MUTANT:
+# 	for line in MUTANT:
+# 		line=line.strip()
+# 		temp=line.split("\t")
+# 		mutants[temp[0]]=[]
+# 		for i in temp[1:]:
+# 			mutants[temp[0]].append(i)
 
-for i in mutants:
-	print i, mutants[i]
+# for i in mutants:
+# 	print i, mutants[i]
 
 ###################################################################################################################
 ### print to file and call R script
 ###################################################################################################################
+
+for i in files:
+	with open("tempViolin.csv","w+") as OUTPUT:
+		OUTPUT.write("value,id\n")
+		for j in teValues[i]:
+			OUTPUT.write(str(j)+",2\n")
+		for k in teValues[files[i]]:
+			OUTPUT.write(str(k)+",1\n")
+	arguements=i+"VS"+files[i]+".pdf"
+	subprocess.check_call(["./test.R test.jpg"])	
 
 # add part to print the required values to a csv file which will be read by the R script
 
