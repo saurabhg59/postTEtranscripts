@@ -7,7 +7,7 @@ library(readr)
 
 datafile<-read_csv("tempViolin.csv") # should have a column called value and a column called id
 
-datafile$value<-log10(datafile$value+0.1)
+datafile$value<-log10(datafile$value+0.2)
 
 datafile$id<-as.factor(datafile$id)
 
@@ -17,7 +17,7 @@ plot<-plot+scale_fill_manual(values=c("royalblue1", "orange1")) # blue = control
 
 plot <-plot + geom_boxplot(width=0.05) + stat_summary(fun.y=mean, geom="point", size=2, color="white") + theme_bw()+theme(legend.position = "none")
 
-plot+coord_cartesian(ylim = c(-2,5))
+# plot+coord_cartesian(ylim = c(-2,5))
 
 ggsave(args[1])
 
