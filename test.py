@@ -1,4 +1,4 @@
-#! /home/saurabhg59/anaconda2/bin/python
+#! /usr/bin/python
 
 import numpy as np
 import sys
@@ -10,6 +10,7 @@ teValues={}
 l1Values={}
 h2bValues={}
 sums={}
+NEWsums={}
 mean=0
 
 H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
@@ -35,7 +36,7 @@ for filename in sys.argv[1:]:
 				a[1]=a[1][:-2]
 				a[2]=a[2][:-2]
 				tempFilename=a[1]
-				files[a[1]]=a[2]
+				files[a[1]]=a[2] #treatment ---> control
 				geneValues[a[1]]=[]
 				teValues[a[1]]=[]
 				h2bValues[a[1]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -44,6 +45,8 @@ for filename in sys.argv[1:]:
 				h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 				sums[a[1]]=0
 				sums[a[2]]=0
+				NEWsums[a[1]]=0
+				NEWsums[a[2]]=0
 				lineCount+=1
 			else:
 				line=line.strip()
@@ -59,46 +62,51 @@ for filename in sys.argv[1:]:
 							h2bValues[a[1]][H2Bindex[i]]=int(b[1])
 							h2bValues[a[2]][H2Bindex[i]]=int(b[2])
 
-#the below code should ideally delete all the 0 valued lines, needs to be tested for multiple files to be sure that it is working as expected
+###################################################################################################################
+### Deleting lines with all 0s
+###################################################################################################################
 
 geneLength=len(geneValues[tempFilename])
 
+emptyLines=[]
+
 for i in range(geneLength):
 	geneSum=0
-	emptyLines=[]
 	for j in geneValues:
 		geneSum+=geneValues[j][i]
 	if(geneSum==0):
 		emptyLines.append(i)
 
 for i in geneValues:
-	geneValues[i]=np.delete(geneValues[i],emptyLines)
+	geneValues[i]=(np.delete(geneValues[i],emptyLines)).tolist()
 
 teLength=len(teValues[tempFilename])
 
+emptyLinesTE=[]
+
 for i in range(teLength):
-	teSum=0
-	emptyLines=[]
+	teSum=0	
 	for j in teValues:
 		teSum+=teValues[j][i]
 	if(teSum==0):
-		emptyLines.append(i)
+		emptyLinesTE.append(i)
 
 for i in teValues:
-	teValues[i]=np.delete(teValues[i],emptyLines)
+	teValues[i]=(np.delete(teValues[i],emptyLinesTE)).tolist()
 
 # l1Length=len(l1Values[tempFilename])
 
+# emptyLinesL1=[]
+
 # for i in range(l1Length):
-# 	l1Sum=0
-# 	emptyLines=[]
+# 	l1Sum=0	
 # 	for j in l1Values:
 # 		l1Sum+=l1Values[j][i]
 # 	if(l1Sum==0):
 # 		emptyLines.append(i)
 
 # for i in l1Values:
-# 	l1Values[i]=np.delete(l1Values[i],emptyLines)
+# 	l1Values[i]=(np.delete(l1Values[i],emptyLines)).tolist()
 
 ###################################################################################################################
 ### Normalization part
@@ -116,26 +124,38 @@ for i in files:
 
 for i in sums:
 	# print i,"--->",sums[i]
-	# for j in h2bValues[i]:
-	# 	print j
 	mean+=sums[i]
 
 mean/=float(len(sums))
 
-factors=sums
+factors=dict(sums)
+
+geneLengths=len(geneValues[tempFilename])
+teLengths=len(teValues[tempFilename])
 
 for i in factors:
 	factors[i]=mean/factors[i]
-	for j in geneValues[i]:
-		j=j*factors[i]
-	for k in teValues[i]:
-		k=k*factors[i]
+	for j in range(geneLengths):
+		geneValues[i][j]*=factors[i]
+	for k in range(teLengths):
+		teValues[i][k]*=factors[i]
 
 ###################################################################################################################
 ### determine H2B barplot colors somehow
 ###################################################################################################################
 
+mutants=dict(files)
 
+with open("mutantsFile.txt",'r') as MUTANT:
+	for line in MUTANT:
+		line=line.strip()
+		temp=line.split("\t")
+		mutants[temp[0]]=[]
+		for i in temp[1:]:
+			mutants[temp[0]].append(i)
+
+for i in mutants:
+	print i, mutants[i]
 
 ###################################################################################################################
 ### print to file and call R script
@@ -145,7 +165,7 @@ for i in factors:
 
 # arguements = violin plot filename <SPACE> barplot1 filename <SPACE> barplot2 filename
 
-call("./test.R " + arguements ) # this should call the R script and give the output filename as an arguement(ideally, needs to be tested)
+# call("./test.R " + arguements ) # this should call the R script and give the output filename as an arguement(ideally, needs to be tested)
 
 # delete the temp csv file created above and loop this entire process
 
