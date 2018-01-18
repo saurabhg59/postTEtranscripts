@@ -163,12 +163,23 @@ for i in factors:
 ###################################################################################################################
 
 for i in files:
-	with open("tempViolin.csv","w+") as OUTPUT:
-		OUTPUT.write("value,id\n")
+	with open("tempViolin.csv","w+") as VIOLIN:
+		VIOLIN.write("value,id\n")
 		for j in teValues[i]:
-			OUTPUT.write(str(j)+",2\n")
+			VIOLIN.write(str(j)+",2\n")
 		for k in teValues[files[i]]:
-			OUTPUT.write(str(k)+",1\n")
+			VIOLIN.write(str(k)+",1\n")
+
+	with open("tempBar1.csv","w+") as BARPLOT1:
+		BARPLOT1.write()
+		for j in h2bValues[i]:
+
+
+	with open("tempBar2.csv","w+") as BARPLOT2:
+		BARPLOT2.write()
+		for k in h2bValues[i]:
+
+
 	arguements=i+"VS"+files[i]+".pdf"
 	subprocess.check_call(["./test.R",arguements])
 	subprocess.check_call(["rm","tempViolin.csv"])	
