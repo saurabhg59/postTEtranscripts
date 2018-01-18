@@ -170,7 +170,7 @@ for i in files:
 		for k in teValues[files[i]]:
 			OUTPUT.write(str(k)+",1\n")
 	arguements=i+"VS"+files[i]+".pdf"
-	subprocess.check_call(["./test.R test.jpg"])	
+	subprocess.check_call("./test.R test.jpg")	
 
 # add part to print the required values to a csv file which will be read by the R script
 
