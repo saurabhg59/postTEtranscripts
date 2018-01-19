@@ -88,33 +88,33 @@ for filename in sys.argv[1:]:
 ### Deleting lines with all 0s
 ###################################################################################################################
 
-geneLength=len(geneValues[tempFilename])
+# geneLength=len(geneValues[tempFilename])
 
-emptyLines=[]
+# emptyLines=[]
 
-for i in range(geneLength):
-	geneSum=0
-	for j in geneValues:
-		geneSum+=geneValues[j][i]
-	if(geneSum==0):
-		emptyLines.append(i)
+# for i in range(geneLength):
+# 	geneSum=0
+# 	for j in geneValues:
+# 		geneSum+=geneValues[j][i]
+# 	if(geneSum==0):
+# 		emptyLines.append(i)
 
-for i in geneValues:
-	geneValues[i]=(np.delete(geneValues[i],emptyLines)).tolist()
+# for i in geneValues:
+# 	geneValues[i]=(np.delete(geneValues[i],emptyLines)).tolist()
 
-teLength=len(teValues[tempFilename])
+# teLength=len(teValues[tempFilename])
 
-emptyLinesTE=[]
+# emptyLinesTE=[]
 
-for i in range(teLength):
-	teSum=0	
-	for j in teValues:
-		teSum+=teValues[j][i]
-	if(teSum==0):
-		emptyLinesTE.append(i)
+# for i in range(teLength):
+# 	teSum=0	
+# 	for j in teValues:
+# 		teSum+=teValues[j][i]
+# 	if(teSum==0):
+# 		emptyLinesTE.append(i)
 
-for i in teValues:
-	teValues[i]=(np.delete(teValues[i],emptyLinesTE)).tolist()
+# for i in teValues:
+# 	teValues[i]=(np.delete(teValues[i],emptyLinesTE)).tolist()
 
 # l1Length=len(l1Values[tempFilename])
 
@@ -134,40 +134,40 @@ for i in teValues:
 ### Normalization part
 ###################################################################################################################
 
-for i in files:
-	for j in geneValues[i]:
-		sums[i]+=j
-	for k in teValues[i]:
-		sums[i]+=k
-	# for n in l1Values[i]:
-	# 	sums[i]+=n
-	for l in geneValues[files[i]]:
-		sums[files[i]]+=l
-	for m in teValues[files[i]]:
-		sums[files[i]]+=m
-	# for o in l1Values[files[i]]:
-	# 	sums[files[i]]+=o
+# for i in files:
+# 	for j in geneValues[i]:
+# 		sums[i]+=j
+# 	for k in teValues[i]:
+# 		sums[i]+=k
+# 	# for n in l1Values[i]:
+# 	# 	sums[i]+=n
+# 	for l in geneValues[files[i]]:
+# 		sums[files[i]]+=l
+# 	for m in teValues[files[i]]:
+# 		sums[files[i]]+=m
+# 	# for o in l1Values[files[i]]:
+# 	# 	sums[files[i]]+=o
 
 
-for i in sums:
-	# print i,"--->",sums[i]
-	mean+=sums[i]
+# for i in sums:
+# 	# print i,"--->",sums[i]
+# 	mean+=sums[i]
 
-mean/=float(len(sums))
+# mean/=float(len(sums))
 
-factors=dict(sums)
+# factors=dict(sums)
 
-geneLengths=len(geneValues[tempFilename])
-teLengths=len(teValues[tempFilename])
+# geneLengths=len(geneValues[tempFilename])
+# teLengths=len(teValues[tempFilename])
 
-for i in factors:
-	factors[i]=mean/factors[i]
-	for j in range(geneLengths):
-		geneValues[i][j]*=factors[i]
-	for k in range(teLengths):
-		teValues[i][k]*=factors[i]
-	for m in range(len(h2bValues[i])):
-		h2bValues[i][m]*=factors[i]
+# for i in factors:
+# 	factors[i]=mean/factors[i]
+# 	for j in range(geneLengths):
+# 		geneValues[i][j]*=factors[i]
+# 	for k in range(teLengths):
+# 		teValues[i][k]*=factors[i]
+# 	for m in range(len(h2bValues[i])):
+# 		h2bValues[i][m]*=factors[i]
 	# for n in range(l1Length):
 	# 	l1Values[i][n]*=factors[i]
 
@@ -175,21 +175,21 @@ for i in factors:
 ### This part will read mutantsFile.txt and determine the barplot colors for the mutants
 ###################################################################################################################
 
-mutants=dict(files)
+# mutants=dict(files)
 
-with open("mutantsFile.txt",'r') as MUTANT:
-	for line in MUTANT:
-		line=line.strip()
-		temp=line.split("\t")
-		mutants[temp[0]]=[]
-		for i in temp[1:]:
-			mutants[temp[0]].append(i)
+# with open("mutantsFile.txt",'r') as MUTANT:
+# 	for line in MUTANT:
+# 		line=line.strip()
+# 		temp=line.split("\t")
+# 		mutants[temp[0]]=[]
+# 		for i in temp[1:]:
+# 			mutants[temp[0]].append(i)
 
-for i in mutants:
-	for j in mutants[i]:
-		for k in revH2Bindex:
-			if j in revH2Bindex[k]:
-				colors[i][k]="orange1"
+# for i in mutants:
+# 	for j in mutants[i]:
+# 		for k in revH2Bindex:
+# 			if j in revH2Bindex[k]:
+# 				colors[i][k]="orange1"
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create violin and barplots
@@ -203,33 +203,33 @@ for i in files:
 		for k in teValues[files[i]]:
 			VIOLIN.write(str(k)+",1\n")
 
-	with open("tempBar1.csv","w+") as BARPLOT1:
-		BARPLOT1.write("UID,values\n")
-		for j in range(len(h2bValues[i])):
-			BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
+	# with open("tempBar1.csv","w+") as BARPLOT1:
+	# 	BARPLOT1.write("UID,values\n")
+	# 	for j in range(len(h2bValues[i])):
+	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
 
-	with open("tempColors1.csv","w+") as COLOR1:
-		COLOR1.write("UID,colors\n")
-		for j in range(len(colors[i])):
-			COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
+	# with open("tempColors1.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[i])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
 
-	with open("tempBar2.csv","w+") as BARPLOT2:
-		BARPLOT2.write("UID,values\n")
-		for k in range(len(h2bValues[files[i]])):
-			BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+	# with open("tempBar2.csv","w+") as BARPLOT2:
+	# 	BARPLOT2.write("UID,values\n")
+	# 	for k in range(len(h2bValues[files[i]])):
+	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
 
-	with open("tempColors2.csv","w+") as COLOR1:
-		COLOR1.write("UID,colors\n")
-		for j in range(len(colors[files[i]])):
-			COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
+	# with open("tempColors2.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[files[i]])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
 
 	arguements=["./test.R"]
 	arguements.append(i+"VS"+files[i]+".jpeg")
-	arguements.append(i+".jpeg")
-	arguements.append(files[i]+".jpeg")
+	# arguements.append(i+".jpeg")
+	# arguements.append(files[i]+".jpeg")
 	subprocess.check_call(arguements)
 	subprocess.check_call(["rm","tempViolin.csv"])
-	subprocess.check_call(["rm","tempBar1.csv"])
-	subprocess.check_call(["rm","tempBar2.csv"])
-	subprocess.check_call(["rm","tempColors1.csv"])
-	subprocess.check_call(["rm","tempColors2.csv"])
+	# subprocess.check_call(["rm","tempBar1.csv"])
+	# subprocess.check_call(["rm","tempBar2.csv"])
+	# subprocess.check_call(["rm","tempColors1.csv"])
+	# subprocess.check_call(["rm","tempColors2.csv"])
