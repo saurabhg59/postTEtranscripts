@@ -15,7 +15,7 @@ plot<-ggplot(datafile, aes(x=id, y=value, fill=id)) + geom_violin() + labs(y = "
 
 plot<-plot+scale_fill_manual(values=c("royalblue1", "orange1")) # blue = control, orange = case
 
-plot <-plot + geom_boxplot(width=0.05) + stat_summary(fun.y=mean, geom="point", size=2, color="white") + theme_bw()+theme(legend.position = "none")
+plot <-plot + geom_boxplot(width=0.05, outlier.shape = NA) + stat_summary(fun.y=mean, geom="point", size=2, color="white") + theme_bw()+theme(legend.position = "none")
 
 # plot+coord_cartesian(ylim = c(-2,5))
 
