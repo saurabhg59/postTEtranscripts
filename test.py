@@ -7,7 +7,7 @@
 import subprocess
 import numpy as np
 import sys
-from subprocess import call
+#from subprocess import call
 
 files={}
 geneValues={}
@@ -44,45 +44,63 @@ revH2Bindex = {0 : "H2BFWT_NM_001002916", 1 : "HIST1H2BA_NM_170610",
 ### Reading in all the .cntTable files and storing the values into hashes
 ###################################################################################################################
 
-#check for rmsk or l1 file is missing right now
-
 for filename in sys.argv[1:]:
 	lineCount=0
-	with open(filename,'r') as INPUT:
-		for line in INPUT:
-			line=line.strip()
-			if (lineCount==0):
-				a=line.split("\t")
-				a[1]=a[1][:-2]
-				a[2]=a[2][:-2]
-				tempFilename=a[1]
-				files[a[1]]=a[2] #treatment ---> control
-				geneValues[a[1]]=[]
-				teValues[a[1]]=[]
-				h2bValues[a[1]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-				geneValues[a[2]]=[]
-				teValues[a[2]]=[]
-				h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-				sums[a[1]]=0
-				sums[a[2]]=0
-				colors[a[1]]=["royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1",
-								"royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1"]
-				colors[a[2]]=["royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4",
-								"royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4"]
-				lineCount+=1
-			else:
+	if 'l1' in filename:
+		with open(filename,'r') as INPUT:
+			for line in INPUT:
 				line=line.strip()
-				b=line.split("\t")
-				if (":" in b[0]):
-					teValues[a[1]].append(int(b[1]))
-					teValues[a[2]].append(int(b[2]))
+				if (lineCount==0):
+					a=line.split("\t")
+					a[1]=a[1][:-2]
+					a[2]=a[2][:-2]
+					tempFilename=a[1]
+					files[a[1]]=a[2] #treatment ---> control
+					geneValues[a[1]]=[]
+					teValues[a[1]]=[]
+					l1Values[a[1]]=[]
+					h2bValues[a[1]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					geneValues[a[2]]=[]
+					teValues[a[2]]=[]
+					l1Values[a[2]]=[]
+					h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+					sums[a[1]]=0
+					sums[a[2]]=0
+					colors[a[1]]=["royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1",
+									"royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1"]
+					colors[a[2]]=["royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4",
+									"royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4"]
+					lineCount+=1
 				else:
-					geneValues[a[1]].append(int(b[1]))
-					geneValues[a[2]].append(int(b[2]))
-					for i in H2Bindex:
-						if i in b[0]:
-							h2bValues[a[1]][H2Bindex[i]]=int(b[1])
-							h2bValues[a[2]][H2Bindex[i]]=int(b[2])
+					line=line.strip()
+					b=line.split("\t")
+					if (":" in b[0]):
+						l1Values[a[1]].append(int(b[1]))
+						l1Values[a[2]].append(int(b[2]))
+					else:
+						geneValues[a[1]].append(int(b[1]))
+						geneValues[a[2]].append(int(b[2]))
+						for i in H2Bindex:
+							if i in b[0]:
+								h2bValues[a[1]][H2Bindex[i]]=int(b[1])
+								h2bValues[a[2]][H2Bindex[i]]=int(b[2])
+	elif 'rmsk' in filename:
+		with open(filename,'r') as INPUT:
+			for line in INPUT:
+				line=line.strip()
+				if(lineCount==0):
+					a=line.split("\t")
+					a[1]=a[1][:-2]
+					a[2]=a[2][:-2]
+					lineCount+=1
+				else:
+					line=line.strip()
+					b=line.split("\t")
+					if (":" in b[0]):
+						teValues[a[1]].append(int(b[1]))
+						teValues[a[2]].append(int(b[2]))
+
+						#### store Alu values in a different hash
 
 ###################################################################################################################
 ### Deleting lines with all 0s
@@ -116,19 +134,19 @@ for i in range(teLength):
 for i in teValues:
 	teValues[i]=(np.delete(teValues[i],emptyLinesTE)).tolist()
 
-# l1Length=len(l1Values[tempFilename])
+l1Length=len(l1Values[tempFilename])
 
-# emptyLinesL1=[]
+emptyLinesL1=[]
 
-# for i in range(l1Length):
-# 	l1Sum=0	
-# 	for j in l1Values:
-# 		l1Sum+=l1Values[j][i]
-# 	if(l1Sum==0):
-# 		emptyLines.append(i)
+for i in range(l1Length):
+	l1Sum=0	
+	for j in l1Values:
+		l1Sum+=l1Values[j][i]
+	if(l1Sum==0):
+		emptyLines.append(i)
 
-# for i in l1Values:
-# 	l1Values[i]=(np.delete(l1Values[i],emptyLines)).tolist()
+for i in l1Values:
+	l1Values[i]=(np.delete(l1Values[i],emptyLines)).tolist()
 
 ###################################################################################################################
 ### Normalization part
@@ -139,14 +157,14 @@ for i in files:
 		sums[i]+=j
 	for k in teValues[i]:
 		sums[i]+=k
-	# for n in l1Values[i]:
-	# 	sums[i]+=n
+	for n in l1Values[i]:
+		sums[i]+=n
 	for l in geneValues[files[i]]:
 		sums[files[i]]+=l
 	for m in teValues[files[i]]:
 		sums[files[i]]+=m
-	# for o in l1Values[files[i]]:
-	# 	sums[files[i]]+=o
+	for o in l1Values[files[i]]:
+		sums[files[i]]+=o
 
 
 for i in sums:
@@ -159,6 +177,7 @@ factors=dict(sums)
 
 geneLengths=len(geneValues[tempFilename])
 teLengths=len(teValues[tempFilename])
+l1Length=len(l1Values[tempFilename])
 
 for i in factors:
 	factors[i]=mean/factors[i]
@@ -168,8 +187,9 @@ for i in factors:
 		teValues[i][k]*=factors[i]
 	for m in range(len(h2bValues[i])):
 		h2bValues[i][m]*=factors[i]
-	# for n in range(l1Length):
-	# 	l1Values[i][n]*=factors[i]
+	for n in range(l1Length):
+		l1Values[i][n]*=factors[i]
+
 
 ###################################################################################################################
 ### This part will read mutantsFile.txt and determine the barplot colors for the mutants
@@ -189,18 +209,21 @@ for i in mutants:
 	for j in mutants[i]:
 		for k in revH2Bindex:
 			if j in revH2Bindex[k]:
-				colors[i][k]="orange1"
+				if i in colors.keys():
+					colors[i][k]="orange1"
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create violin and barplots
 ###################################################################################################################
 
+###### add part to make Alu plots as well
+
 for i in files:
 	with open("tempViolin.csv","w+") as VIOLIN:
 		VIOLIN.write("value,id\n")
-		for j in teValues[i]:
+		for j in l1Values[i]:
 			VIOLIN.write(str(j)+",2\n")
-		for k in teValues[files[i]]:
+		for k in l1Values[files[i]]:
 			VIOLIN.write(str(k)+",1\n")
 
 	with open("tempBar1.csv","w+") as BARPLOT1:
