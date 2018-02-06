@@ -13,6 +13,7 @@ files={}
 geneValues={}
 teValues={}
 l1Values={}
+aluValues={}
 h2bValues={}
 sums={}
 mean=0
@@ -59,10 +60,12 @@ for filename in sys.argv[1:]:
 					geneValues[a[1]]=[]
 					teValues[a[1]]=[]
 					l1Values[a[1]]=[]
+					aluValues[a[1]]=[]
 					h2bValues[a[1]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 					geneValues[a[2]]=[]
 					teValues[a[2]]=[]
 					l1Values[a[2]]=[]
+					aluValues[a[2]]=[]
 					h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 					sums[a[1]]=0
 					sums[a[2]]=0
@@ -99,9 +102,11 @@ for filename in sys.argv[1:]:
 					if (":" in b[0]):
 						teValues[a[1]].append(int(b[1]))
 						teValues[a[2]].append(int(b[2]))
+						if ("Alu" in b[0]):
+							aluValues[a[1]].append(int(b[1]))
+							aluValues[a[2]].append(int(b[2]))
 
-						#### store Alu values in a different hash
-
+						
 ###################################################################################################################
 ### Deleting lines with all 0s
 ###################################################################################################################
@@ -143,10 +148,24 @@ for i in range(l1Length):
 	for j in l1Values:
 		l1Sum+=l1Values[j][i]
 	if(l1Sum==0):
-		emptyLines.append(i)
+		emptyLinesL1.append(i)
 
 for i in l1Values:
-	l1Values[i]=(np.delete(l1Values[i],emptyLines)).tolist()
+	l1Values[i]=(np.delete(l1Values[i],emptyLinesL1)).tolist()
+
+aluLength=len(aluValues[tempFilename])
+
+emptyLinesAlu=[]
+
+for i in range(aluLength):
+	aluSum=0	
+	for j in aluValues:
+		aluSum+=aluValues[j][i]
+	if(aluSum==0):
+		emptyLinesAlu.append(i)
+
+for i in aluValues:
+	aluValues[i]=(np.delete(aluValues[i],emptyLinesAlu)).tolist()
 
 ###################################################################################################################
 ### Normalization part
@@ -189,6 +208,8 @@ for i in factors:
 		h2bValues[i][m]*=factors[i]
 	for n in range(l1Length):
 		l1Values[i][n]*=factors[i]
+	for l in range(aluLength):
+		aluValues[i][l]*=factors[i]
 
 
 ###################################################################################################################
@@ -225,6 +246,10 @@ for i in files:
 			VIOLIN.write(str(j)+",2\n")
 		for k in l1Values[files[i]]:
 			VIOLIN.write(str(k)+",1\n")
+		for l in aluValues[i]:
+			VIOLIN.write(str(l)+",3\n")
+		for m in aluValues[files[i]]:
+			VIOLIN.write(str(m)+",4\n")
 
 	with open("tempBar1.csv","w+") as BARPLOT1:
 		BARPLOT1.write("UID,values\n")

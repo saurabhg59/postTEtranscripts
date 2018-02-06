@@ -4,20 +4,29 @@ args = commandArgs(trailingOnly=TRUE);
 
 library(ggplot2)
 library(readr)
+library(ggpubr)
+library(magrittr)
 
 datafile<-read_csv("tempViolin.csv") # should have a column called value and a column called id
 
 datafile$value<-log10(datafile$value+0.2)
 
-datafile$id<-as.factor(datafile$id)
+datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type Alu","Mutant Alu"))
+#########################################################################################################################################################
+# VIOLIN PLOT PART
+#########################################################################################################################################################
+# plot<-ggplot(datafile, aes(x=id, y=value, fill=id)) + geom_violin() + labs(y = "Log10 transformed expression levels", x="")
 
-plot<-ggplot(datafile, aes(x=id, y=value, fill=id)) + geom_violin() + labs(y = "Log10 transformed expression levels", x="")
+# plot<-plot+scale_fill_manual(values=c("royalblue1", "orange1")) # blue = control, orange = case
 
-plot<-plot+scale_fill_manual(values=c("royalblue1", "orange1")) # blue = control, orange = case
-
-plot <-plot + geom_boxplot(width=0.05, outlier.shape = NA) + stat_summary(fun.y=mean, geom="point", size=2, color="white") + theme_bw()+theme(legend.position = "none")
+# plot <-plot + geom_boxplot(width=0.05, outlier.shape = NA) + stat_summary(fun.y=mean, geom="point", size=2, color="white") + theme_bw()+theme(legend.position = "none")
 
 # plot+coord_cartesian(ylim = c(-2,5))
+#########################################################################################################################################################
+# BOXPLOT PART
+#########################################################################################################################################################
+
+plot<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
 ggsave(args[1])
 
@@ -57,3 +66,8 @@ q2 = ggplot(barFile2) + scale_fill_manual(values = barColors2$colors) + geom_col
 q2  + theme(axis.text.x = element_text(angle = 90, hjust = 1),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),legend.position = "none") + coord_cartesian(ylim = c(0,4))
 
 ggsave(args[3])
+
+#########################################################################################################################################################
+
+# variable<-ks.test(run1_without0_normal_l1_only$`4395.bam.T`,run1_without0_normal_l1_only$`4403.bam.C`,alternative = "less")
+# write.table(variable$p.value,file="test.jpeg",quote = F,col.names = F,row.names = F)
