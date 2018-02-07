@@ -30,16 +30,16 @@ H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
 "NM_003520" : 16, "NM_003527" : 17,
 "NM_003528" : 18}
 
-revH2Bindex = {0 : "H2BFWT_NM_001002916", 1 : "HIST1H2BA_NM_170610",
-2 : "HIST1H2BB_NM_021062", 3 : "HIST1H2BC_NM_003526",
-4 : "HIST1H2BD_NM_021063", 5 : "HIST1H2BD_NM_138720",
-6 : "HIST1H2BE_NM_003523", 7 : "HIST1H2BF_NM_003522",
-8 : "HIST1H2BG_NM_003518", 9 : "HIST1H2BH_NM_003524",
-10 : "HIST1H2BI_NM_003525", 11 : "HIST1H2BJ_NM_021058",
-12 : "HIST1H2BK_NM_001312653", 13 : "HIST1H2BK_NM_080593",
-14 : "HIST1H2BL_NM_003519", 15 : "HIST1H2BM_NM_003521",
-16 : "HIST1H2BN_NM_003520", 17 : "HIST1H2BO_NM_003527",
-18 : "HIST2H2BE_NM_003528"}
+# revH2Bindex = {0 : "H2BFWT_NM_001002916", 1 : "HIST1H2BA_NM_170610",
+# 2 : "HIST1H2BB_NM_021062", 3 : "HIST1H2BC_NM_003526",
+# 4 : "HIST1H2BD_NM_021063", 5 : "HIST1H2BD_NM_138720",
+# 6 : "HIST1H2BE_NM_003523", 7 : "HIST1H2BF_NM_003522",
+# 8 : "HIST1H2BG_NM_003518", 9 : "HIST1H2BH_NM_003524",
+# 10 : "HIST1H2BI_NM_003525", 11 : "HIST1H2BJ_NM_021058",
+# 12 : "HIST1H2BK_NM_001312653", 13 : "HIST1H2BK_NM_080593",
+# 14 : "HIST1H2BL_NM_003519", 15 : "HIST1H2BM_NM_003521",
+# 16 : "HIST1H2BN_NM_003520", 17 : "HIST1H2BO_NM_003527",
+# 18 : "HIST2H2BE_NM_003528"}
 
 ###################################################################################################################
 ### Reading in all the .cntTable files and storing the values into hashes
@@ -69,10 +69,10 @@ for filename in sys.argv[1:]:
 					h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 					sums[a[1]]=0
 					sums[a[2]]=0
-					colors[a[1]]=["royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1",
-									"royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1"]
-					colors[a[2]]=["royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4",
-									"royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4"]
+					# colors[a[1]]=["royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1",
+					# 				"royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1"]
+					# colors[a[2]]=["royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4",
+					# 				"royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4"]
 					lineCount+=1
 				else:
 					line=line.strip()
@@ -226,12 +226,26 @@ with open("mutantsFile.txt",'r') as MUTANT:
 		for i in temp[1:]:
 			mutants[temp[0]].append(i)
 
+h2bValuesForPlot=dict(files)
+
+# for i in mutants:
+# 	for j in mutants[i]:
+# 		for k in revH2Bindex:
+# 			if j in revH2Bindex[k]:
+# 				if i in colors.keys():
+# 					colors[i][k]="orange1"
+
+
+###### ideally this part will append the wild type and mutant h2b values to an array which has key as the mutant filename
+###### needs to be tested
+
 for i in mutants:
+	h2bValuesForPlot[i]=[]
 	for j in mutants[i]:
-		for k in revH2Bindex:
-			if j in revH2Bindex[k]:
-				if i in colors.keys():
-					colors[i][k]="orange1"
+		if j in H2Bindex.keys():
+			h2bValuesForPlot[i].append(h2bValues[files[i]][H2Bindex[j]]) #appending wild type h2b value
+			h2bValuesForPlot[i].append(h2bValues[i][H2Bindex[j]]) # appending mutant h2b value
+
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create violin and barplots
@@ -251,25 +265,27 @@ for i in files:
 		for m in aluValues[files[i]]:
 			VIOLIN.write(str(m)+",4\n")
 
-	with open("tempBar1.csv","w+") as BARPLOT1:
-		BARPLOT1.write("UID,values\n")
-		for j in range(len(h2bValues[i])):
-			BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
+###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
 
-	with open("tempColors1.csv","w+") as COLOR1:
-		COLOR1.write("UID,colors\n")
-		for j in range(len(colors[i])):
-			COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
+	# with open("tempBar1.csv","w+") as BARPLOT1:
+	# 	BARPLOT1.write("UID,values\n")
+	# 	for j in range(len(h2bValues[i])):
+	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
 
-	with open("tempBar2.csv","w+") as BARPLOT2:
-		BARPLOT2.write("UID,values\n")
-		for k in range(len(h2bValues[files[i]])):
-			BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+	# with open("tempColors1.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[i])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
 
-	with open("tempColors2.csv","w+") as COLOR1:
-		COLOR1.write("UID,colors\n")
-		for j in range(len(colors[files[i]])):
-			COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
+	# with open("tempBar2.csv","w+") as BARPLOT2:
+	# 	BARPLOT2.write("UID,values\n")
+	# 	for k in range(len(h2bValues[files[i]])):
+	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+
+	# with open("tempColors2.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[files[i]])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
 
 	arguements=["./test.R"]
 	arguements.append(i+"VS"+files[i]+".jpeg")
