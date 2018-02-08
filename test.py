@@ -69,10 +69,7 @@ for filename in sys.argv[1:]:
 					h2bValues[a[2]]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 					sums[a[1]]=0
 					sums[a[2]]=0
-					# colors[a[1]]=["royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1",
-					# 				"royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1","royalblue1"]
-					# colors[a[2]]=["royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4",
-					# 				"royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4","royalblue4"]
+					colors[a[1]]=[]
 					lineCount+=1
 				else:
 					line=line.strip()
@@ -235,65 +232,61 @@ h2bValuesForPlot=dict(files)
 # 				if i in colors.keys():
 # 					colors[i][k]="orange1"
 
-
-###### ideally this part will append the wild type and mutant h2b values to an array which has key as the mutant filename
-###### needs to be tested
-
 for i in mutants:
 	h2bValuesForPlot[i]=[]
 	for j in mutants[i]:
 		if j in H2Bindex.keys():
 			h2bValuesForPlot[i].append(h2bValues[files[i]][H2Bindex[j]]) #appending wild type h2b value
 			h2bValuesForPlot[i].append(h2bValues[i][H2Bindex[j]]) # appending mutant h2b value
+			colors[i].append("royalblue")
+			colors[i].append("orange")
 
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create violin and barplots
 ###################################################################################################################
 
-###### add part to make Alu plots as well
+# for i in files:
+# 	with open("tempViolin.csv","w+") as VIOLIN:
+# 		VIOLIN.write("value,id\n")
+# 		for j in l1Values[i]:
+# 			VIOLIN.write(str(j)+",2\n")
+# 		for k in l1Values[files[i]]:
+# 			VIOLIN.write(str(k)+",1\n")
+# 		for l in aluValues[i]:
+# 			VIOLIN.write(str(l)+",3\n")
+# 		for m in aluValues[files[i]]:
+# 			VIOLIN.write(str(m)+",4\n")
 
-for i in files:
-	with open("tempViolin.csv","w+") as VIOLIN:
-		VIOLIN.write("value,id\n")
-		for j in l1Values[i]:
-			VIOLIN.write(str(j)+",2\n")
-		for k in l1Values[files[i]]:
-			VIOLIN.write(str(k)+",1\n")
-		for l in aluValues[i]:
-			VIOLIN.write(str(l)+",3\n")
-		for m in aluValues[files[i]]:
-			VIOLIN.write(str(m)+",4\n")
+# ###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
 
-###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
+# 	# with open("tempBar1.csv","w+") as BARPLOT1:
+# 	# 	BARPLOT1.write("UID,values\n")
+# 	# 	for j in range(len(h2bValues[i])):
+# 	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
 
-	# with open("tempBar1.csv","w+") as BARPLOT1:
-	# 	BARPLOT1.write("UID,values\n")
-	# 	for j in range(len(h2bValues[i])):
-	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
+# 	# with open("tempColors1.csv","w+") as COLOR1:
+# 	# 	COLOR1.write("UID,colors\n")
+# 	# 	for j in range(len(colors[i])):
+# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
 
-	# with open("tempColors1.csv","w+") as COLOR1:
-	# 	COLOR1.write("UID,colors\n")
-	# 	for j in range(len(colors[i])):
-	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
+# 	# with open("tempBar2.csv","w+") as BARPLOT2:
+# 	# 	BARPLOT2.write("UID,values\n")
+# 	# 	for k in range(len(h2bValues[files[i]])):
+# 	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
 
-	# with open("tempBar2.csv","w+") as BARPLOT2:
-	# 	BARPLOT2.write("UID,values\n")
-	# 	for k in range(len(h2bValues[files[i]])):
-	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+# 	# with open("tempColors2.csv","w+") as COLOR1:
+# 	# 	COLOR1.write("UID,colors\n")
+# 	# 	for j in range(len(colors[files[i]])):
+# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
 
-	# with open("tempColors2.csv","w+") as COLOR1:
-	# 	COLOR1.write("UID,colors\n")
-	# 	for j in range(len(colors[files[i]])):
-	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
-
-	arguements=["./test.R"]
-	arguements.append(i+"VS"+files[i]+".jpeg")
-	arguements.append(i+".jpeg")
-	arguements.append(files[i]+".jpeg")
-	subprocess.check_call(arguements)
-	subprocess.check_call(["rm","tempViolin.csv"])
-	subprocess.check_call(["rm","tempBar1.csv"])
-	subprocess.check_call(["rm","tempBar2.csv"])
-	subprocess.check_call(["rm","tempColors1.csv"])
-	subprocess.check_call(["rm","tempColors2.csv"])
+# 	arguements=["./test.R"]
+# 	arguements.append(i+"VS"+files[i]+".jpeg")
+# 	arguements.append(i+".jpeg")
+# 	arguements.append(files[i]+".jpeg")
+# 	subprocess.check_call(arguements)
+# 	subprocess.check_call(["rm","tempViolin.csv"])
+# 	subprocess.check_call(["rm","tempBar1.csv"])
+# 	subprocess.check_call(["rm","tempBar2.csv"])
+# 	subprocess.check_call(["rm","tempColors1.csv"])
+# 	subprocess.check_call(["rm","tempColors2.csv"])

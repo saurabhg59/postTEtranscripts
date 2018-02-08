@@ -31,7 +31,7 @@ plot<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("roy
 ggsave(args[1])
 
 #########################################################################################################################################################
-
+ggbarplot(test, x = "name", y = "values",fill = "name",color = "black",palette = test$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE)
 ##### change barplot commands so that it automatically assigns colors and reads in the gene names from the csv file.
 
 # barFile1<-read_csv("tempBar1.csv") #should have column 1 as H2B names and column 2 as H2B values with header called values
