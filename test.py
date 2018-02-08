@@ -18,6 +18,7 @@ h2bValues={}
 sums={}
 mean=0
 colors={}
+uid={}
 
 H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
 "NM_021062" : 2, "NM_003526" : 3,
@@ -30,16 +31,16 @@ H2Bindex = {"NM_001002916" : 0, "NM_170610" : 1,
 "NM_003520" : 16, "NM_003527" : 17,
 "NM_003528" : 18}
 
-# revH2Bindex = {0 : "H2BFWT_NM_001002916", 1 : "HIST1H2BA_NM_170610",
-# 2 : "HIST1H2BB_NM_021062", 3 : "HIST1H2BC_NM_003526",
-# 4 : "HIST1H2BD_NM_021063", 5 : "HIST1H2BD_NM_138720",
-# 6 : "HIST1H2BE_NM_003523", 7 : "HIST1H2BF_NM_003522",
-# 8 : "HIST1H2BG_NM_003518", 9 : "HIST1H2BH_NM_003524",
-# 10 : "HIST1H2BI_NM_003525", 11 : "HIST1H2BJ_NM_021058",
-# 12 : "HIST1H2BK_NM_001312653", 13 : "HIST1H2BK_NM_080593",
-# 14 : "HIST1H2BL_NM_003519", 15 : "HIST1H2BM_NM_003521",
-# 16 : "HIST1H2BN_NM_003520", 17 : "HIST1H2BO_NM_003527",
-# 18 : "HIST2H2BE_NM_003528"}
+revH2Bindex = {0 : "H2BFWT_NM_001002916", 1 : "HIST1H2BA_NM_170610",
+2 : "HIST1H2BB_NM_021062", 3 : "HIST1H2BC_NM_003526",
+4 : "HIST1H2BD_NM_021063", 5 : "HIST1H2BD_NM_138720",
+6 : "HIST1H2BE_NM_003523", 7 : "HIST1H2BF_NM_003522",
+8 : "HIST1H2BG_NM_003518", 9 : "HIST1H2BH_NM_003524",
+10 : "HIST1H2BI_NM_003525", 11 : "HIST1H2BJ_NM_021058",
+12 : "HIST1H2BK_NM_001312653", 13 : "HIST1H2BK_NM_080593",
+14 : "HIST1H2BL_NM_003519", 15 : "HIST1H2BM_NM_003521",
+16 : "HIST1H2BN_NM_003520", 17 : "HIST1H2BO_NM_003527",
+18 : "HIST2H2BE_NM_003528"}
 
 ###################################################################################################################
 ### Reading in all the .cntTable files and storing the values into hashes
@@ -70,6 +71,7 @@ for filename in sys.argv[1:]:
 					sums[a[1]]=0
 					sums[a[2]]=0
 					colors[a[1]]=[]
+					uid[a[1]]=[]
 					lineCount+=1
 				else:
 					line=line.strip()
@@ -240,6 +242,8 @@ for i in mutants:
 			h2bValuesForPlot[i].append(h2bValues[i][H2Bindex[j]]) # appending mutant h2b value
 			colors[i].append("royalblue")
 			colors[i].append("orange")
+			uid[i].append(revH2Bindex[H2Bindex[j]]."_WT") #append the H2B gene name with _WT
+			uid[i].append(revH2Bindex[H2Bindex[j]]."_Mutant") #append the H2B gene name with _Mutant
 
 
 ###################################################################################################################
@@ -279,6 +283,11 @@ for i in mutants:
 # 	# 	COLOR1.write("UID,colors\n")
 # 	# 	for j in range(len(colors[files[i]])):
 # 	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
+
+# 	with open("tempBarplot.csv","w+") as BARPLOT:
+# 		BARPLOT.write("UID,values,colors\n")
+# 		for j in range(len(h2bValuesForPlot[i])):
+# 			### print each line to file, line = UID,value,color
 
 # 	arguements=["./test.R"]
 # 	arguements.append(i+"VS"+files[i]+".jpeg")
