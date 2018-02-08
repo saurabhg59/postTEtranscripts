@@ -242,9 +242,8 @@ for i in mutants:
 			h2bValuesForPlot[i].append(h2bValues[i][H2Bindex[j]]) # appending mutant h2b value
 			colors[i].append("royalblue")
 			colors[i].append("orange")
-			uid[i].append(revH2Bindex[H2Bindex[j]]."_WT") #append the H2B gene name with _WT
-			uid[i].append(revH2Bindex[H2Bindex[j]]."_Mutant") #append the H2B gene name with _Mutant
-
+			uid[i].append(revH2Bindex[H2Bindex[j]]+"_WT") #append the H2B gene name with _WT
+			uid[i].append(revH2Bindex[H2Bindex[j]]+"_Mutant") #append the H2B gene name with _Mutant
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create violin and barplots
