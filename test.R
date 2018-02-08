@@ -4,8 +4,9 @@ args = commandArgs(trailingOnly=TRUE);
 
 library(ggplot2)
 library(readr)
-library(ggpubr)
 library(magrittr)
+library(ggpubr)
+
 
 datafile<-read_csv("tempViolin.csv") # should have a column called value and a column called id
 
@@ -26,13 +27,19 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 # BOXPLOT PART
 #########################################################################################################################################################
 
-plot<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
+plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
 ggsave(args[1])
 
 #########################################################################################################################################################
-ggbarplot(test, x = "name", y = "values",fill = "name",color = "black",palette = test$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE)
-##### change barplot commands so that it automatically assigns colors and reads in the gene names from the csv file.
+
+barFile<-read_csv("tempBar.csv") #should have column 1 as H2B names and column 2 as H2B values and column 3 as colors
+
+barFile$values<-log10(barFile$values+1.02)
+
+plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE)
+
+ggsave(args[2])
 
 # barFile1<-read_csv("tempBar1.csv") #should have column 1 as H2B names and column 2 as H2B values with header called values
 # row.names(barFile1)=barFile1$UID

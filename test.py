@@ -249,52 +249,55 @@ for i in mutants:
 ### This part will write the values for each pair to files and create violin and barplots
 ###################################################################################################################
 
-# for i in files:
-# 	with open("tempViolin.csv","w+") as VIOLIN:
-# 		VIOLIN.write("value,id\n")
-# 		for j in l1Values[i]:
-# 			VIOLIN.write(str(j)+",2\n")
-# 		for k in l1Values[files[i]]:
-# 			VIOLIN.write(str(k)+",1\n")
-# 		for l in aluValues[i]:
-# 			VIOLIN.write(str(l)+",3\n")
-# 		for m in aluValues[files[i]]:
-# 			VIOLIN.write(str(m)+",4\n")
+for i in files:
+	with open("tempViolin.csv","w+") as VIOLIN:
+		VIOLIN.write("value,id\n")
+		for j in l1Values[i]:
+			VIOLIN.write(str(j)+",2\n")
+		for k in l1Values[files[i]]:
+			VIOLIN.write(str(k)+",1\n")
+		for l in aluValues[i]:
+			VIOLIN.write(str(l)+",3\n")
+		for m in aluValues[files[i]]:
+			VIOLIN.write(str(m)+",4\n")
 
-# ###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
+###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
 
-# 	# with open("tempBar1.csv","w+") as BARPLOT1:
-# 	# 	BARPLOT1.write("UID,values\n")
-# 	# 	for j in range(len(h2bValues[i])):
-# 	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
+	# with open("tempBar1.csv","w+") as BARPLOT1:
+	# 	BARPLOT1.write("UID,values\n")
+	# 	for j in range(len(h2bValues[i])):
+	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
 
-# 	# with open("tempColors1.csv","w+") as COLOR1:
-# 	# 	COLOR1.write("UID,colors\n")
-# 	# 	for j in range(len(colors[i])):
-# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
+	# with open("tempColors1.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[i])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
 
-# 	# with open("tempBar2.csv","w+") as BARPLOT2:
-# 	# 	BARPLOT2.write("UID,values\n")
-# 	# 	for k in range(len(h2bValues[files[i]])):
-# 	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+	# with open("tempBar2.csv","w+") as BARPLOT2:
+	# 	BARPLOT2.write("UID,values\n")
+	# 	for k in range(len(h2bValues[files[i]])):
+	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
 
-# 	# with open("tempColors2.csv","w+") as COLOR1:
-# 	# 	COLOR1.write("UID,colors\n")
-# 	# 	for j in range(len(colors[files[i]])):
-# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
+	# with open("tempColors2.csv","w+") as COLOR1:
+	# 	COLOR1.write("UID,colors\n")
+	# 	for j in range(len(colors[files[i]])):
+	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
 
-# 	with open("tempBarplot.csv","w+") as BARPLOT:
-# 		BARPLOT.write("UID,values,colors\n")
-# 		for j in range(len(h2bValuesForPlot[i])):
-# 			### print each line to file, line = UID,value,color
+	with open("tempBar.csv","w+") as BARPLOT:
+		BARPLOT.write("UID,values,colors\n")
+		for j in range(len(h2bValuesForPlot[i])):
+			BARPLOT.write(uid[i][j]+","+str(h2bValuesForPlot[i][j])+","+colors[i][j]+"\n")
+			### print each line to file, line = UID,value,color
 
-# 	arguements=["./test.R"]
-# 	arguements.append(i+"VS"+files[i]+".jpeg")
-# 	arguements.append(i+".jpeg")
-# 	arguements.append(files[i]+".jpeg")
-# 	subprocess.check_call(arguements)
-# 	subprocess.check_call(["rm","tempViolin.csv"])
-# 	subprocess.check_call(["rm","tempBar1.csv"])
-# 	subprocess.check_call(["rm","tempBar2.csv"])
-# 	subprocess.check_call(["rm","tempColors1.csv"])
-# 	subprocess.check_call(["rm","tempColors2.csv"])
+	arguements=["./test.R"]
+	arguements.append(i+"VS"+files[i]+"_TE.jpeg")
+	arguements.append(i+"VS"+files[i]+"_H2B.jpeg")
+	# arguements.append(i+".jpeg")
+	# arguements.append(files[i]+".jpeg")
+	subprocess.check_call(arguements)
+	subprocess.check_call(["rm","tempViolin.csv"])
+	subprocess.check_call(["rm","tempBar.csv"])
+	# subprocess.check_call(["rm","tempBar1.csv"])
+	# subprocess.check_call(["rm","tempBar2.csv"])
+	# subprocess.check_call(["rm","tempColors1.csv"])
+	# subprocess.check_call(["rm","tempColors2.csv"])
