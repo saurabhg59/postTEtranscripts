@@ -27,7 +27,13 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 # BOXPLOT PART
 #########################################################################################################################################################
 
+df=data.frame(datafile[1:145,1],datafile[146:290,1])
+
+a = ks.test(df$value,df$value.1)
+
 plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
+
+plot1+geom_label(aes(x=1.5 , y = 4, label = paste("p-value = ",a$p.value,sep = "")), size = 5)
 
 ggsave(args[1])
 

@@ -7,6 +7,7 @@
 import subprocess
 import numpy as np
 import sys
+import pandas as pd
 #from subprocess import call
 
 files={}
@@ -257,11 +258,9 @@ for i in files:
 		for k in l1Values[files[i]]:
 			VIOLIN.write(str(k)+",1\n")
 		for l in aluValues[i]:
-			VIOLIN.write(str(l)+",3\n")
+			VIOLIN.write(str(l)+",4\n")
 		for m in aluValues[files[i]]:
-			VIOLIN.write(str(m)+",4\n")
-
-###### need to change how h2b values are written to a csv file and sent to R, should be 1 column with alternating wild type and mutant values. ideally with gene names
+			VIOLIN.write(str(m)+",3\n")
 
 	# with open("tempBar1.csv","w+") as BARPLOT1:
 	# 	BARPLOT1.write("UID,values\n")
@@ -287,7 +286,6 @@ for i in files:
 		BARPLOT.write("UID,values,colors\n")
 		for j in range(len(h2bValuesForPlot[i])):
 			BARPLOT.write(uid[i][j]+","+str(h2bValuesForPlot[i][j])+","+colors[i][j]+"\n")
-			### print each line to file, line = UID,value,color
 
 	arguements=["./test.R"]
 	arguements.append(i+"VS"+files[i]+"_TE.jpeg")
@@ -301,3 +299,23 @@ for i in files:
 	# subprocess.check_call(["rm","tempBar2.csv"])
 	# subprocess.check_call(["rm","tempColors1.csv"])
 	# subprocess.check_call(["rm","tempColors2.csv"])
+
+###################################################################################################################
+### Printing the normalized values to csv files
+###################################################################################################################
+
+with open("pooledFile.csv","w+") as POOLED:
+	POOLED.write("value,id\n")
+	for i in files:
+		for j in l1Values[i]:
+			POOLED.write(str(j)+",2\n")
+		for k in l1Values[files[i]]:
+			POOLED.write(str(k)+",1\n")
+		for l in aluValues[i]:
+			POOLED.write(str(l)+",4\n")
+		for m in aluValues[files[i]]:
+			POOLED.write(str(m)+",3\n")
+		for l in teValues[i]:
+			POOLED.write(str(l)+",6\n")
+		for m in teValues[files[i]]:
+			POOLED.write(str(m)+",5\n")
