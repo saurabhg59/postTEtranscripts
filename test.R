@@ -33,7 +33,13 @@ a = ks.test(df$value,df$value.1)
 
 plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
-plot1+geom_label(aes(x=1.5 , y = 4, label = paste("p-value = ",a$p.value,sep = "")), size = 5)
+# plot1+geom_label(aes(x=1.5 , y = 4, label = paste("p-value = ",a$p.value,sep = "")), size = 5)
+
+plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",a$p.value,sep = "")), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
+
+### add part to calculate ks-test values for Alu's and then update the variable in the below line.
+
+plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",a$p.value,sep = "")), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 
 ggsave(args[1])
 
