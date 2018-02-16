@@ -251,6 +251,9 @@ for i in mutants:
 ###################################################################################################################
 
 for i in files:
+
+	print "Working"
+
 	with open("tempViolin.csv","w+") as VIOLIN:
 		VIOLIN.write("value,id\n")
 		for j in l1Values[i]:
@@ -319,3 +322,5 @@ with open("pooledFile.csv","w+") as POOLED:
 			POOLED.write(str(l)+",6\n")
 		for m in teValues[files[i]]:
 			POOLED.write(str(m)+",5\n")
+
+print "Done"
