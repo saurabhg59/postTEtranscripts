@@ -304,7 +304,7 @@ for i in files:
 	# subprocess.check_call(["rm","tempColors2.csv"])
 
 ###################################################################################################################
-### Printing the normalized values to csv files
+### Printing the normalized values to csv files and deciding on higher/lower l1/h2b
 ###################################################################################################################
 
 with open("pooledFile.csv","w+") as POOLED:
@@ -324,3 +324,20 @@ with open("pooledFile.csv","w+") as POOLED:
 			POOLED.write(str(m)+",5\n")
 
 print "Done"
+
+with open("statsFile.txt","w+") as STATS:
+	for i in files:
+		if(np.mean(l1Values[i])>np.mean(l1Values[files[i]])):
+			STATS.write(i+"\tHigher_L1\t")
+		elif(np.mean(l1Values[i])<np.mean(l1Values[files[i]])):
+			STATS.write(i+"\tLower_L1\t")
+		else:
+			STATS.write(i+"\tEqual_L1\t")
+
+		#### the H2B values of mutant/wt are in the same array with even indices are wt and odd as mutant
+		if(np.mean(h2bValuesForPlot[i][1:][::2])>np.mean(h2bValuesForPlot[i][0:][::2])):
+			STATS.write("Higher_H2B\n")
+		elif(np.mean(h2bValuesForPlot[i][1:][::2])<np.mean(h2bValuesForPlot[i][0:][::2])):
+			STATS.write("Lower_H2B\n")
+		else:
+			STATS.write("Equal_H2B\n")

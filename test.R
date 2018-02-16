@@ -12,6 +12,14 @@ library(ggpubr)
 
 suppressMessages(datafile<-read_csv("tempViolin.csv")) # should have a column called value and a column called id
 
+df=data.frame(datafile[1:145,1],datafile[146:290,1])
+
+aluDF=data.frame(datafile[291:331,1],datafile[332:372,1])
+
+a = ks.test(df$value,df$value.1)
+
+b = ks.test(aluDF$value,aluDF$value.1)
+
 datafile$value<-log10(datafile$value+0.2)
 
 datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type Alu","Mutant Alu"))
@@ -29,10 +37,6 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 # BOXPLOT PART
 #########################################################################################################################################################
 
-df=data.frame(datafile[1:145,1],datafile[146:290,1])
-
-a = ks.test(df$value,df$value.1)
-
 plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
 if(a$p.value>0){
@@ -45,7 +49,13 @@ if(a$p.value>0){
 
 ### add part to calculate ks-test values for Alu's and then update the variable in the below line.
 
-plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",a$p.value,sep = "")), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+if(b$p.value>0){
+	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",formatC(b$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+}else{
+	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+}
+
+#plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",a$p.value,sep = "")), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 
 suppressMessages(ggsave(args[1]))
 
