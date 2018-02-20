@@ -293,6 +293,7 @@ for i in files:
 	arguements=["./test.R"]
 	arguements.append(i+"VS"+files[i]+"_TE.jpeg")
 	arguements.append(i+"VS"+files[i]+"_H2B.jpeg")
+	# arguements.append(i+"VS"+files[i])
 	# arguements.append(i+".jpeg")
 	# arguements.append(files[i]+".jpeg")
 	subprocess.check_call(arguements)
