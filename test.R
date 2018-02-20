@@ -16,9 +16,9 @@ df=data.frame(datafile[1:145,1],datafile[146:290,1])
 
 aluDF=data.frame(datafile[291:331,1],datafile[332:372,1])
 
-a = ks.test(df$value,df$value.1,alternative="two.sided")
+a = ks.test(df$value,df$value.1,alternative="l")
 
-b = ks.test(aluDF$value,aluDF$value.1,alternative="two.sided")
+b = ks.test(aluDF$value,aluDF$value.1,alternative="l")
 
 # l1WilcoxTwosidedBeforeLog = wilcox.test(df$value-df$value.1,alternative="two.sided")
 
