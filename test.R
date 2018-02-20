@@ -83,9 +83,9 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 
 plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
-if(a$p.value>0 && a$p.value<=0.0001){
+if(a$p.value>=0.0001 && a$p.value<=1){
 	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",a$p.value,sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
-}else if(a$p.value>0.0001 && a$p.value<=1){ 
+}else if(a$p.value>0 && a$p.value<0.0001){ 
 	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",formatC(a$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
 }else{
 	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
@@ -95,9 +95,9 @@ if(a$p.value>0 && a$p.value<=0.0001){
 
 ### add part to calculate ks-test values for Alu's and then update the variable in the below line.
 
-if(b$p.value>0 && b$p.value<=0.0001){
+if(b$p.value>=0.0001 && b$p.value<=1){
 	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",b$p.value,sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
-}else if(b$p.value>0 && b$p.value<=1){
+}else if(b$p.value>0 && b$p.value<0.0001){
 	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",formatC(b$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 }else{
 	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
