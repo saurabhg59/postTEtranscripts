@@ -81,7 +81,7 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 # BOXPLOT PART
 #########################################################################################################################################################
 
-plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
+plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",width=0.3,palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
 
 if(a$p.value>=0.0001 && a$p.value<=1){
 	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",round(a$p.value,digits=4),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
@@ -113,7 +113,7 @@ suppressMessages(barFile<-read_csv("tempBar.csv")) #should have column 1 as H2B 
 
 barFile$values<-log10(barFile$values+1.02)
 
-plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,width=0.2,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
+plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,width=0.15,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
 
 suppressMessages(ggsave(args[2]))
 
