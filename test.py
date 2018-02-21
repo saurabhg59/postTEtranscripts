@@ -291,8 +291,8 @@ for i in files:
 			BARPLOT.write(uid[i][j]+","+str(h2bValuesForPlot[i][j])+","+colors[i][j]+"\n")
 
 	arguements=["./test.R"]
-	arguements.append(i+"VS"+files[i]+"_TE.jpeg")
-	arguements.append(i+"VS"+files[i]+"_H2B.jpeg")
+	arguements.append(i+"VS"+files[i]+"_TE.pdf")
+	arguements.append(i+"VS"+files[i]+"_H2B.pdf")
 	# arguements.append(i+"VS"+files[i])
 	# arguements.append(i+".jpeg")
 	# arguements.append(files[i]+".jpeg")

@@ -113,9 +113,9 @@ suppressMessages(barFile<-read_csv("tempBar.csv")) #should have column 1 as H2B 
 
 barFile$values<-log10(barFile$values+1.02)
 
-plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,width=0.15,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
+plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
 
-suppressMessages(ggsave(args[2]))
+ggsave(args[2],width=5,units="cm")
 
 # barFile1<-read_csv("tempBar1.csv") #should have column 1 as H2B names and column 2 as H2B values with header called values
 # row.names(barFile1)=barFile1$UID
