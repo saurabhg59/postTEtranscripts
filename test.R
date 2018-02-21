@@ -81,14 +81,14 @@ datafile$id<-factor(datafile$id,labels = c("Wild-Type L1","Mutant L1","Wild-Type
 # BOXPLOT PART
 #########################################################################################################################################################
 
-plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",width=0.3,palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
-
+# plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab="Log10 transformed expression levels", show.legend=FALSE)
+plot1<-ggboxplot(datafile,x="id",y="value",color="black",fill="id",palette=c("royalblue1","orange1","royalblue4","orange4"),shape="id", xlab=FALSE, ylab=FALSE, show.legend=FALSE)
 if(a$p.value>=0.0001 && a$p.value<=1){
-	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",round(a$p.value,digits=4),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
+	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",round(a$p.value,digits=4),sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
 }else if(a$p.value>0 && a$p.value<0.0001){ 
-	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",formatC(a$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
+	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P = ",formatC(a$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
 }else{
-	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
+	plot1<-plot1+geom_text(aes(x=1.5 , y = 4, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=1,y=3.8,xend=2,yend=3.8))+geom_segment(mapping=aes(x=1,y=3.8,xend=1,yend=3.5))+geom_segment(mapping=aes(x=2,y=3.8,xend=2,yend=3.5))
 }
 
 # plot1+geom_label(aes(x=1.5 , y = 4, label = paste("p-value = ",a$p.value,sep = "")), size = 5)
@@ -96,16 +96,18 @@ if(a$p.value>=0.0001 && a$p.value<=1){
 ### add part to calculate ks-test values for Alu's and then update the variable in the below line.
 
 if(b$p.value>=0.0001 && b$p.value<=1){
-	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",round(b$p.value,digits=4),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",round(b$p.value,digits=4),sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 }else if(b$p.value>0 && b$p.value<0.0001){
-	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",formatC(b$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",formatC(b$p.value, format = "e", digits = 2),sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 }else{
-	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
+	plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P < ","2.22e-16",sep = ""),fontface="italic"), size = 2)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 }
 
 #plot1<-plot1+geom_text(aes(x=3.5 , y = 0, label = paste("P = ",a$p.value,sep = "")), size = 5)+geom_segment(mapping=aes(x=3,y=0.2,xend=4,yend=0.2))+geom_segment(mapping=aes(x=3,y=0.2,xend=3,yend=0.5))+geom_segment(mapping=aes(x=4,y=0.2,xend=4,yend=0.5))
 
-suppressMessages(ggsave(args[1]))
+suppressMessages(ggsave(args[1],width=36,height=50,units="mm"))
+
+# suppressMessages(ggsave(args[1]))
 
 #########################################################################################################################################################
 
@@ -113,9 +115,13 @@ suppressMessages(barFile<-read_csv("tempBar.csv")) #should have column 1 as H2B 
 
 barFile$values<-log10(barFile$values+1.02)
 
-plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
+# plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,x.text.angle = 90,xlab=FALSE,ylab="Log10 transformed expression values",show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
 
-ggsave(args[2],width=5,units="cm")
+plot2<-ggbarplot(barFile, x = "UID", y = "values",fill = "UID",color = "black",palette = barFile$colors,sort.by.groups = FALSE,label=FALSE,xlab=FALSE,ylab=FALSE,show.legend=FALSE) + coord_cartesian(ylim = c(0, 4))
+
+suppressMessages(ggsave(args[2],width=18,height=50,units="mm"))
+
+# suppressMessages(ggsave(args[2]))
 
 # barFile1<-read_csv("tempBar1.csv") #should have column 1 as H2B names and column 2 as H2B values with header called values
 # row.names(barFile1)=barFile1$UID
