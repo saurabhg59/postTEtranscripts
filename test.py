@@ -171,6 +171,8 @@ for i in aluValues:
 ### Normalization part
 ###################################################################################################################
 
+# print files
+
 for i in files:
 	for j in geneValues[i]:
 		sums[i]+=j
@@ -189,6 +191,7 @@ for i in files:
 for i in sums:
 	# print i,"--->",sums[i]
 	mean+=sums[i]
+
 
 mean/=float(len(sums))
 
@@ -234,7 +237,7 @@ h2bValuesForPlot=dict(files)
 # 			if j in revH2Bindex[k]:
 # 				if i in colors.keys():
 # 					colors[i][k]="orange1"
-
+# exit(0)
 for i in mutants:
 	h2bValuesForPlot[i]=[]
 	for j in mutants[i]:
@@ -250,55 +253,55 @@ for i in mutants:
 ### This part will write the values for each pair to files and create violin and barplots
 ###################################################################################################################
 
-for i in files:
+# for i in files:
 
-	print "Working"
+# 	print "Working"
 
-	with open("tempViolin.csv","w+") as VIOLIN:
-		VIOLIN.write("value,id\n")
-		for j in l1Values[i]:
-			VIOLIN.write(str(j)+",2\n")
-		for k in l1Values[files[i]]:
-			VIOLIN.write(str(k)+",1\n")
-		for l in aluValues[i]:
-			VIOLIN.write(str(l)+",4\n")
-		for m in aluValues[files[i]]:
-			VIOLIN.write(str(m)+",3\n")
+# 	with open("tempViolin.csv","w+") as VIOLIN:
+# 		VIOLIN.write("value,id\n")
+# 		for j in l1Values[i]:
+# 			VIOLIN.write(str(j)+",2\n")
+# 		for k in l1Values[files[i]]:
+# 			VIOLIN.write(str(k)+",1\n")
+# 		for l in aluValues[i]:
+# 			VIOLIN.write(str(l)+",4\n")
+# 		for m in aluValues[files[i]]:
+# 			VIOLIN.write(str(m)+",3\n")
 
-	# with open("tempBar1.csv","w+") as BARPLOT1:
-	# 	BARPLOT1.write("UID,values\n")
-	# 	for j in range(len(h2bValues[i])):
-	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
+# 	# with open("tempBar1.csv","w+") as BARPLOT1:
+# 	# 	BARPLOT1.write("UID,values\n")
+# 	# 	for j in range(len(h2bValues[i])):
+# 	# 		BARPLOT1.write(revH2Bindex[j]+","+str(h2bValues[i][j])+"\n")
 
-	# with open("tempColors1.csv","w+") as COLOR1:
-	# 	COLOR1.write("UID,colors\n")
-	# 	for j in range(len(colors[i])):
-	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
+# 	# with open("tempColors1.csv","w+") as COLOR1:
+# 	# 	COLOR1.write("UID,colors\n")
+# 	# 	for j in range(len(colors[i])):
+# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[i][j]+"\n")
 
-	# with open("tempBar2.csv","w+") as BARPLOT2:
-	# 	BARPLOT2.write("UID,values\n")
-	# 	for k in range(len(h2bValues[files[i]])):
-	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
+# 	# with open("tempBar2.csv","w+") as BARPLOT2:
+# 	# 	BARPLOT2.write("UID,values\n")
+# 	# 	for k in range(len(h2bValues[files[i]])):
+# 	# 		BARPLOT2.write(revH2Bindex[k]+","+str(h2bValues[files[i]][k])+"\n")
 
-	# with open("tempColors2.csv","w+") as COLOR1:
-	# 	COLOR1.write("UID,colors\n")
-	# 	for j in range(len(colors[files[i]])):
-	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
+# 	# with open("tempColors2.csv","w+") as COLOR1:
+# 	# 	COLOR1.write("UID,colors\n")
+# 	# 	for j in range(len(colors[files[i]])):
+# 	# 		COLOR1.write(revH2Bindex[j]+","+colors[files[i]][j]+"\n")
 
-	with open("tempBar.csv","w+") as BARPLOT:
-		BARPLOT.write("UID,values,colors\n")
-		for j in range(len(h2bValuesForPlot[i])):
-			BARPLOT.write(uid[i][j]+","+str(h2bValuesForPlot[i][j])+","+colors[i][j]+"\n")
+# 	with open("tempBar.csv","w+") as BARPLOT:
+# 		BARPLOT.write("UID,values,colors\n")
+# 		for j in range(len(h2bValuesForPlot[i])):
+# 			BARPLOT.write(uid[i][j]+","+str(h2bValuesForPlot[i][j])+","+colors[i][j]+"\n")
 
-	arguements=["./test.R"]
-	arguements.append(i+"VS"+files[i]+"_TE.pdf")
-	arguements.append(i+"VS"+files[i]+"_H2B.pdf")
-	# arguements.append(i+"VS"+files[i])
-	# arguements.append(i+".jpeg")
-	# arguements.append(files[i]+".jpeg")
-	subprocess.check_call(arguements)
-	subprocess.check_call(["rm","tempViolin.csv"])
-	subprocess.check_call(["rm","tempBar.csv"])
+# 	arguements=["./test.R"]
+# 	arguements.append(i+"VS"+files[i]+"_TE.pdf")
+# 	arguements.append(i+"VS"+files[i]+"_H2B.pdf")
+# 	# arguements.append(i+"VS"+files[i])
+# 	# arguements.append(i+".jpeg")
+# 	# arguements.append(files[i]+".jpeg")
+# 	subprocess.check_call(arguements)
+# 	subprocess.check_call(["rm","tempViolin.csv"])
+# 	subprocess.check_call(["rm","tempBar.csv"])
 	# subprocess.check_call(["rm","tempBar1.csv"])
 	# subprocess.check_call(["rm","tempBar2.csv"])
 	# subprocess.check_call(["rm","tempColors1.csv"])
@@ -308,37 +311,41 @@ for i in files:
 ### Printing the normalized values to csv files and deciding on higher/lower l1/h2b
 ###################################################################################################################
 
-with open("pooledFile.csv","w+") as POOLED:
-	POOLED.write("value,id\n")
-	for i in files:
-		for j in l1Values[i]:
-			POOLED.write(str(j)+",2\n")
-		for k in l1Values[files[i]]:
-			POOLED.write(str(k)+",1\n")
-		for l in aluValues[i]:
-			POOLED.write(str(l)+",4\n")
-		for m in aluValues[files[i]]:
-			POOLED.write(str(m)+",3\n")
-		for l in teValues[i]:
-			POOLED.write(str(l)+",6\n")
-		for m in teValues[files[i]]:
-			POOLED.write(str(m)+",5\n")
+# with open("pooledFile.csv","w+") as POOLED:
+# 	POOLED.write("value,id\n")
+# 	for i in files:
+# 		for j in l1Values[i]:
+# 			POOLED.write(str(j)+",2\n")
+# 		for k in l1Values[files[i]]:
+# 			POOLED.write(str(k)+",1\n")
+# 		for l in aluValues[i]:
+# 			POOLED.write(str(l)+",4\n")
+# 		for m in aluValues[files[i]]:
+# 			POOLED.write(str(m)+",3\n")
+# 		for l in teValues[i]:
+# 			POOLED.write(str(l)+",6\n")
+# 		for m in teValues[files[i]]:
+# 			POOLED.write(str(m)+",5\n")
 
-print "Done"
+# print "Done"
 
-with open("statsFile.txt","w+") as STATS:
-	for i in files:
-		if(np.mean(l1Values[i])>np.mean(l1Values[files[i]])):
-			STATS.write(i+"\tHigher_L1\t")
-		elif(np.mean(l1Values[i])<np.mean(l1Values[files[i]])):
-			STATS.write(i+"\tLower_L1\t")
-		else:
-			STATS.write(i+"\tEqual_L1\t")
+# with open("statsFile.txt","w+") as STATS:
+# 	for i in files:
+# 		if(np.mean(l1Values[i])>np.mean(l1Values[files[i]])):
+# 			STATS.write(i+"\tHigher_L1\t")
+# 		elif(np.mean(l1Values[i])<np.mean(l1Values[files[i]])):
+# 			STATS.write(i+"\tLower_L1\t")
+# 		else:
+# 			STATS.write(i+"\tEqual_L1\t")
 
-		#### the H2B values of mutant/wt are in the same array with even indices are wt and odd as mutant
-		if(np.mean(h2bValuesForPlot[i][1:][::2])>np.mean(h2bValuesForPlot[i][0:][::2])):
-			STATS.write("Higher_H2B\n")
-		elif(np.mean(h2bValuesForPlot[i][1:][::2])<np.mean(h2bValuesForPlot[i][0:][::2])):
-			STATS.write("Lower_H2B\n")
-		else:
-			STATS.write("Equal_H2B\n")
+# 		#### the H2B values of mutant/wt are in the same array with even indices are wt and odd as mutant
+# 		if(np.mean(h2bValuesForPlot[i][1:][::2])>np.mean(h2bValuesForPlot[i][0:][::2])):
+# 			STATS.write("Higher_H2B\n")
+# 		elif(np.mean(h2bValuesForPlot[i][1:][::2])<np.mean(h2bValuesForPlot[i][0:][::2])):
+# 			STATS.write("Lower_H2B\n")
+# 		else:
+# 			STATS.write("Equal_H2B\n")
+
+print "case","WT_H2B","Mutant_H2B"
+for i in h2bValuesForPlot:
+	print i,h2bValuesForPlot[i][0],h2bValuesForPlot[i][1]
