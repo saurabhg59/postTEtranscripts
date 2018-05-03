@@ -11,67 +11,92 @@ oldValues={}
 youngValues={}
 middleValues={}
 sums={}
+l1baseValues={}
 
 ###################################################################################################################
 ### Reading in all the .cntTable files and storing the values into hashes
 ###################################################################################################################
 
 for filename in sys.argv[1:]:
-	lineCount=0
-	with open(filename,'r') as INPUT:
-		data=INPUT.read().strip().split('\n')
-	temp1=data[0].split('\t')
-	temp1[1]=temp1[1][:-2]
-	temp1[2]=temp1[2][:-2]
-	files[temp1[1]]=temp1[2]
-	geneValues[temp1[1]]=[]
-	geneValues[temp1[2]]=[]
-	oldValues[temp1[1]]=[]
-	oldValues[temp1[2]]=[]
-	middleValues[temp1[1]]=[]
-	middleValues[temp1[2]]=[]
-	youngValues[temp1[1]]=[]
-	youngValues[temp1[2]]=[]
-	sums[temp1[1]]=0
-	sums[temp2[2]]=0
+	if("l1Age" in filename):	
+		with open(filename,'r') as INPUT:
+			data=INPUT.read().strip().split('\n')
+		temp1=data[0].split('\t')
+		# print(filename)
+		# print(data[0])
+		# print(temp1)
+		temp1[1]=temp1[1][:-2]
+		temp1[2]=temp1[2][:-2]
+		files[temp1[1]]=temp1[2]
+		geneValues[temp1[1]]=[]
+		geneValues[temp1[2]]=[]
+		oldValues[temp1[1]]=[]
+		oldValues[temp1[2]]=[]
+		middleValues[temp1[1]]=[]
+		middleValues[temp1[2]]=[]
+		youngValues[temp1[1]]=[]
+		youngValues[temp1[2]]=[]
+		sums[temp1[1]]=0
+		sums[temp1[2]]=0
 
-	for line in data[1:]:
-		temp2=line.split('\t')
-		if(':' in temp2[0]):
-			if('old' in temp2[0]):
-				oldValues[temp1[1]].append(int(temp2[1]))
-				oldValues[temp1[2]].append(int(temp2[2]))
+		for line in data[1:]:
+			temp2=line.split('\t')
+			if(':' in temp2[0]):
+				if('old' in temp2[0]):
+					oldValues[temp1[1]].append(int(temp2[1]))
+					oldValues[temp1[2]].append(int(temp2[2]))
+					sums[temp1[1]]+=int(temp2[1])
+					sums[temp1[2]]+=int(temp2[2])
+				elif('middle' in temp2[0]):
+					middleValues[temp1[1]].append(int(temp2[1]))
+					middleValues[temp1[2]].append(int(temp2[2]))
+					sums[temp1[1]]+=int(temp2[1])
+					sums[temp1[2]]+=int(temp2[2])
+				elif('young' in temp2[0]):
+					youngValues[temp1[1]].append(int(temp2[1]))
+					youngValues[temp1[2]].append(int(temp2[2]))
+					sums[temp1[1]]+=int(temp2[1])
+					sums[temp1[2]]+=int(temp2[2])
+			else:
+				geneValues[temp1[1]].append(int(temp2[1]))
+				geneValues[temp1[2]].append(int(temp2[2]))
 				sums[temp1[1]]+=int(temp2[1])
 				sums[temp1[2]]+=int(temp2[2])
-			elif('middle' in temp2[0]):
-				middleValues[temp1[1]].append(int(temp2[1]))
-				middleValues[temp1[2]].append(int(temp2[2]))
-				sums[temp1[1]]+=int(temp2[1])
-				sums[temp1[2]]+=int(temp2[2])
-			elif('young' in temp2[0]):
-				youngValues[temp1[1]].append(int(temp2[1]))
-				youngValues[temp1[2]].append(int(temp2[2]))
-				sums[temp1[1]]+=int(temp2[1])
-				sums[temp1[2]]+=int(temp2[2])
-		else:
-			geneValues[temp1[1]].append(int(temp2[1]))
-			geneValues[temp1[2]].append(int(temp2[2]))
-			sums[temp1[1]]+=int(temp2[1])
-			sums[temp1[2]]+=int(temp2[2])
 
+	elif("l1_" in filename):
+		with open(filename,'r') as INPUT:
+			data=INPUT.read().strip().split('\n')
+		temp1=data[0].split('\t')
+		# print(filename)
+		# print(data[0])
+		# print(temp1)
+		temp1[1]=temp1[1][:-2]
+		temp1[2]=temp1[2][:-2]
+		l1baseValues[temp1[1]]=[]
+		l1baseValues[temp1[2]]=[]
+		for line in data[1:]:
+			temp2=line.split('\t')
+			if(':' in temp2[0]):
+				l1baseValues[temp1[1]].append(int(temp2[1]))
+				l1baseValues[temp1[2]].append(int(temp2[2]))
+				sums[temp1[1]]+=int(temp2[1])
+				sums[temp1[2]]+=int(temp2[2])
+# print(len(sums))
 ###################################################################################################################
 ### Deleting lines with all 0s
 ###################################################################################################################
 
-geneLength=len(geneValues[geneValues.keys()[0]])
-oldLength=len(oldValues[oldValues.keys()[0]])
-middleLength=len(middleValues[middleValues.keys()[0]])
-youngLength=len(youngValues[youngValues.keys()[0]])
+geneLength=len(geneValues["TCGA-VP-A87D-01.bam"])
+oldLength=len(oldValues["TCGA-VP-A87D-01.bam"])
+middleLength=len(middleValues["TCGA-VP-A87D-01.bam"])
+youngLength=len(youngValues["TCGA-VP-A87D-01.bam"])
+l1baseLength=len(l1baseValues["TCGA-VP-A87D-01.bam"])
 
 emptyLinesGenes=[]
 emptyLinesOld=[]
 emptyLinesYoung=[]
 emptyLinesMiddle=[]
+emptyLinesL1base=[]
 
 for i in range(geneLength):
 	geneSum=0
@@ -101,6 +126,13 @@ for i in range(youngLength):
 	if(youngSum==0):
 		emptyLinesYoung.append(i)
 
+for i in range(l1baseLength):
+	l1baseSum=0
+	for j in l1baseValues:
+		l1baseSum+=l1baseValues[j][i]
+	if(l1baseSum==0):
+		emptyLinesL1base.append(i)
+
 for i in geneValues:
 	geneValues[i]=(np.delete(geneValues[i],emptyLinesGenes)).tolist()
 
@@ -113,10 +145,13 @@ for i in middleValues:
 for i in youngValues:
 	youngValues[i]=(np.delete(youngValues[i],emptyLinesYoung)).tolist()
 
+for i in l1baseValues:
+	l1baseValues[i]=(np.delete(l1baseValues[i],emptyLinesL1base)).tolist()
+
 ###################################################################################################################
 ### Normalization part
 ###################################################################################################################
-
+mean=0
 for i in sums:
 	mean+=sums[i]
 
@@ -124,14 +159,15 @@ mean/=float(len(sums))
 
 factors=dict(sums)
 
-geneLength=len(geneValues[geneValues.keys()[0]])
-oldLength=len(oldValues[oldValues.keys()[0]])
-middleLength=len(middleValues[middleValues.keys()[0]])
-youngLength=len(youngValues[youngValues.keys()[0]])
+geneLength=len(geneValues["TCGA-VP-A87D-01.bam"])
+oldLength=len(oldValues["TCGA-VP-A87D-01.bam"])
+middleLength=len(middleValues["TCGA-VP-A87D-01.bam"])
+youngLength=len(youngValues["TCGA-VP-A87D-01.bam"])
+l1baseLength=len(l1baseValues["TCGA-VP-A87D-01.bam"])
 
 for i in factors:
 	factors[i]=mean/factors[i]
-	for j in range(geneLengths):
+	for j in range(geneLength):
 		geneValues[i][j]*=factors[i]
 	for j in range(oldLength):
 		oldValues[i][j]*=factors[i]
@@ -139,7 +175,33 @@ for i in factors:
 		middleValues[i][j]*=factors[i]
 	for j in range(youngLength):
 		youngValues[i][j]*=factors[i]
+	for j in range(l1baseLength):
+		l1baseValues[i][j]*=factors[i]
 
 ###################################################################################################################
 ### This part will write the values for each pair to files and create boxplots (TBD)
 ###################################################################################################################
+
+for i in files:
+	with open("temp.csv","w+") as OUTPUT:
+		OUTPUT.write("value,id\n")
+		for j in l1baseValues[i]:
+			OUTPUT.write(str(j)+",2\n")
+		for k in l1baseValues[files[i]]:
+			OUTPUT.write(str(k)+",1\n")
+		for l in youngValues[i]:
+			OUTPUT.write(str(l)+",4\n")
+		for m in youngValues[files[i]]:
+			OUTPUT.write(str(m)+",3\n")
+		for l in middleValues[i]:
+			OUTPUT.write(str(l)+",6\n")
+		for m in middleValues[files[i]]:
+			OUTPUT.write(str(m)+",5\n")
+		for l in oldValues[i]:
+			OUTPUT.write(str(l)+",8\n")
+		for m in oldValues[files[i]]:
+			OUTPUT.write(str(m)+",7\n")
+
+	arguements=["./agePlot.R"]
+	arguements.append(i+"VS"+files[i]+"_L1_AGE_PLOT.jpeg")
+	check_call(arguements)
