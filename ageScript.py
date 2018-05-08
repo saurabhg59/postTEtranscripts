@@ -183,7 +183,7 @@ for i in factors:
 ###################################################################################################################
 
 for i in files:
-	with open("temp.csv","w+") as OUTPUT:
+	with open(i+"_VS_"+files[i]+"_L1_AGE_PLOT_GG.csv","w+") as OUTPUT:
 		OUTPUT.write("value,id\n")
 		for j in l1baseValues[i]:
 			OUTPUT.write(str(j)+",2\n")
@@ -203,5 +203,7 @@ for i in files:
 			OUTPUT.write(str(m)+",7\n")
 
 	arguements=["./agePlot.R"]
-	arguements.append(i+"VS"+files[i]+"_L1_AGE_PLOT.jpeg")
+	arguements.append(i+"_VS_"+files[i]+"_L1_AGE_PLOT.pdf")
+	arguements.append(i+"_VS_"+files[i]+"_L1_AGE_PLOT_GG.csv")
+	print(i+"_VS_"+files[i]+"_L1_AGE_PLOT.pdf")
 	check_call(arguements)
